@@ -1,38 +1,28 @@
-// import { excludeField } from '@/helper/excludeFields';
-// import { comparePasswords } from '@/lib/bcrypt';
-// import { createToken } from '@/lib/jwt';
-// import { findUserByEmail } from '@/repositories/users/finUserByEmail';
-// import { IUser } from '@/types/types';
+import { excludeField } from '@/helper/excludeFields';
+import { comparePasswords, hashPassword } from '@/lib/bcrypt';
+import { createToken } from '@/lib/jwt';
+import { findUserByEmail } from '@/repositories/users/finUserByEmail';
 
-// export const loginAction = async (body: IUser) => {
-//   try {
-//     const { email, password } = body;
-//     const userEmail = await findUserByEmail(email);
-//     if (!userEmail) {
-//       return {
-//         status: 400,
-//         message: 'Email Already Exist',
-//       };
-//     }
-//     const isPasswordValid = await comparePasswords(
-//       password,
-//       userEmail.password,
-//     );
-//     if (!isPasswordValid) {
-//       return {
-//         status: 400,
-//         message: 'Invalid Password',
-//       };
-//     }
-//     const dataWithoutPassword = excludeField(userEmail, ['password']);
-//     const token = createToken({ email: userEmail.email });
-//     return {
-//       status: 200,
-//       message: 'Login Succes',
-//       data: dataWithoutPassword,
-//       token,
-//     };
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+import { IUser } from '@/types/user.type';
+
+export const loginAction = async (data: IUser) => {
+  try {
+    const { email, password } = data;
+    const user = await findUserByEmail(email);
+    if (!user) throw new Error('account not found');
+
+    const isPasswordValid = await comparePasswords(password, user.password);
+    if (!isPasswordValid) throw new Error('Invalid password');
+    const dataWithoutPassword = excludeField(user, ['password']);
+
+    const token = createToken({ email: user.email });
+
+    return {
+      message: 'Login success',
+      data: dataWithoutPassword,
+      token,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
