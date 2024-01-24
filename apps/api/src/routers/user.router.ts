@@ -1,4 +1,5 @@
 import { UserController } from '@/controllers/users.controller';
+import { verifyToken } from '@/middleware/jwtVerifyToken';
 // import { verifyToken } from '@/middleware/jwtVerifyToken';
 
 import { Router } from 'express';
@@ -15,14 +16,14 @@ export class UserRouter {
 
   private initializeRoutes(): void {
     this.router.post('/register', this.userController.registerUser);
-    // this.router.post('/login', this.userController.loginUser);
-    // this.router.get('/keeplogin', verifyToken, this.userController.keepLogin);
-    // this.router.post('/forgot-password', this.userController.forgotPassword);
-    // this.router.patch(
-    //   '/reset-password',
-    //   verifyToken,
-    //   this.userController.resetPassword,
-    // );
+    this.router.post('/login', this.userController.loginUser);
+    this.router.get('/keeplogin', verifyToken, this.userController.keepLogin);
+    this.router.post('/forgot-password', this.userController.forgotPassword);
+    this.router.patch(
+      '/reset-password',
+      verifyToken,
+      this.userController.resetPassword,
+    );
   }
 
   getRouter(): Router {

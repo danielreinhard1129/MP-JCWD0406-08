@@ -1,12 +1,11 @@
 import React from 'react';
-// import CardLogin from './components/CardLogin';
+import CardLogin from './components/CardLogin';
 
 const Register = () => {
   return (
-    <main className="w-screen h-full bg-[#d3c4ba]">
+    <main className="w-screen h-full ">
       <section className=" flex items-center justify-center ">
-        {/* <CardLogin /> */}
-        <h1>This CardLogin</h1>
+        <CardLogin />
       </section>
     </main>
   );

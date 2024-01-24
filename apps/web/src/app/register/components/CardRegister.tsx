@@ -294,7 +294,7 @@ const CardRegister = () => {
           <p className=" mt-4">
             Already have an account?{' '}
             <Link href="/login" className="font-bold hover:underline">
-              Log in
+              LogIn
             </Link>
           </p>
         </form>
